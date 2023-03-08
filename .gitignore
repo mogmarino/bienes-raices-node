@@ -1,0 +1,5 @@
+#omitir la carpeta de modulos de node
+/node_modules
+
+#omitir el archivo con las variables de entorno
+.env
