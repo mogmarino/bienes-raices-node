@@ -11,8 +11,11 @@ const formularioLogin = (req, res) => {
 };
 
 const formularioRegistro = (req, res) => {
+  console.log(req.csrfToken());
+
   res.render("auth/registro", {
     pagina: "Crear Cuenta",
+    csrfToken: req.csrfToken(),
   });
 };
 
@@ -39,6 +42,7 @@ const registrar = async (req, res) => {
   if (!resultado.isEmpty()) {
     return res.render("auth/registro", {
       pagina: "Crear Cuenta",
+      csrfToken: req.csrfToken(),
       errores: resultado.array(),
       usuario: {
         nombre: req.body.nombre,
@@ -54,6 +58,7 @@ const registrar = async (req, res) => {
   if (existeUsuario) {
     return res.render("auth/registro", {
       pagina: "Crear Cuenta",
+      csrfToken: req.csrfToken(),
       errores: [{ msg: "El usuario ya esta registrado" }],
       usuario: {
         nombre,
@@ -84,6 +89,37 @@ const registrar = async (req, res) => {
   });
 };
 
+// funcion para confirmar una cuenta
+const confirmar = async (req, res, next) => {
+  const { token } = req.params;
+  console.log("confirmando la cuenta...");
+  console.log(token);
+
+  // verificar si el token es valido
+  const usuario = await Usuario.findOne({ where: { token: token } });
+  console.log(usuario);
+
+  if (!usuario) {
+    return res.render("auth/confirmar-cuenta", {
+      pagina: "Error al confirmar tu cuenta",
+      mensaje: "Hubo un error al confirmar tu cuenta, intenta nuevamente",
+      error: true,
+    });
+  }
+
+  // confirmar la cuenta
+  usuario.token = null;
+  usuario.confirmado = true;
+  await usuario.save();
+
+  res.render("auth/confirmar-cuenta", {
+    pagina: "Cuenta Confirmada",
+    mensaje: "Cuenta confirmada correctamente",
+  });
+
+  // next();
+};
+
 const formularioOlvidePassword = (req, res) => {
   res.render("auth/recuperar-pass", {
     pagina: "Recupera tu acceso a Bienes Raices",
@@ -95,4 +131,5 @@ export {
   formularioRegistro,
   formularioOlvidePassword,
   registrar,
+  confirmar,
 };
