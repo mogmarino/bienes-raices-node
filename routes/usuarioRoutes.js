@@ -5,6 +5,9 @@ import {
   formularioOlvidePassword,
   confirmar,
   registrar,
+  resetPassword,
+  comprobarToken,
+  nuevoPassword,
 } from "../controllers/usuarioController.js";
 
 const router = express.Router();
@@ -14,6 +17,12 @@ router.get("/registro", formularioRegistro);
 router.post("/registro", registrar);
 router.get("/recuperar-pass", formularioOlvidePassword);
 router.get("/confirmar/:token", confirmar);
+router.post("/recuperar-pass", resetPassword);
+
+// Almacena el nuevo password
+router.get("/recuperar-pass/:token", comprobarToken);
+// si eliminamos el action en el formulario va hacia la misma ruta
+router.post("/recuperar-pass/:token", nuevoPassword);
 
 /*
 router
