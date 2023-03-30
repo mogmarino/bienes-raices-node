@@ -509,6 +509,10 @@ video {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
 }
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -523,6 +527,9 @@ video {
 }
 .block {
   display: block;
+}
+.inline-block {
+  display: inline-block;
 }
 .flex {
   display: flex;
@@ -556,6 +563,9 @@ video {
 .rounded-lg {
   border-radius: 0.5rem;
 }
+.rounded {
+  border-radius: 0.25rem;
+}
 .border {
   border-width: 1px;
 }
@@ -582,6 +592,14 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+.bg-indigo-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(79 70 229 / var(--tw-bg-opacity));
+}
+.bg-indigo-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 48 163 / var(--tw-bg-opacity));
 }
 .p-2 {
   padding: 0.5rem;
@@ -616,6 +634,10 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
 }
 .text-center {
   text-align: center;
@@ -690,7 +712,56 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
 .hover\:bg-indigo-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(67 56 202 / var(--tw-bg-opacity));
+}
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+.hover\:bg-gray-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+.hover\:bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+.hover\:text-indigo-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(55 48 163 / var(--tw-text-opacity));
+}
+.hover\:text-indigo-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(49 46 129 / var(--tw-text-opacity));
+}
+@media (min-width: 640px) {
+
+  .sm\:w-auto {
+    width: auto;
+  }
+}
+@media (min-width: 768px) {
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:w-auto {
+    width: auto;
+  }
+
+  .md\:items-center {
+    align-items: center;
+  }
+
+  .md\:gap-4 {
+    gap: 1rem;
+  }
 }
