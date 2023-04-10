@@ -1,8 +1,8 @@
 // funcion que se invoca a si misma
 (function () {
   // https://www.google.com.ar/maps/@-32.8866271,-68.8612278,3a,75y,107.9h,90t/
-  const lat = -32.8866271;
-  const lng = -68.8612278;
+  const lat = document.querySelector("#lat").value || -32.8866271;
+  const lng = document.querySelector("#lng").value || -68.8612278;
   const mapa = L.map("mapa").setView([lat, lng], 16);
   let marker;
 
