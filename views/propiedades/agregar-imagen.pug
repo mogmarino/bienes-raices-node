@@ -1,7 +1,8 @@
 extends ../layout/admin
 
 block styles
-  link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+  link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.css")
+
 
 block contenido 
 
@@ -12,11 +13,13 @@ block contenido
 
      
       div(class="bg-white shadow py-8 px-4 rounded mx-auto my-10 max-w-4xl md:px-10")
-        form.space-y-8(action="/propiedades/crear" method="POST")
-            input(type="hidden", name="_csrf" value= csrfToken)
+        form(class="dropzone space-y-8 border-dashed border-2 w-full min:h-96 h-auto rounded flex-col justify-center items-center" action="/propiedades/crear" method="POST")
+          input(type="hidden", name="_csrf" value= csrfToken)
             
-            input(class="w-full py-3 bg-indigo-500 hover:bg-indigo-700 rounded text-white font-bold uppercase cursor-pointer transition-all" type="submit" value="Publicar Propiedad")
+        input(class="w-full mt-8 py-3 bg-indigo-500 hover:bg-indigo-700 rounded text-white font-bold uppercase cursor-pointer transition-all" type="submit" value="Publicar Propiedad")
 
                     
 block scripts
+  script(src="/js/agregarImagen.js")
+
   
