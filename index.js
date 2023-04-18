@@ -11,7 +11,7 @@ import db from "./config/db.js";
 // crear la app, toda la info del server
 const app = express();
 
-// habilitar lectura de datos de formulario
+// habilitar lectura de datos de formulario -  para archivos de tipo texto, input de tipo text
 app.use(express.urlencoded({ extended: true }));
 
 // habilitar cookie parser
