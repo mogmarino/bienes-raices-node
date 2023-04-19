@@ -8,3 +8,34 @@ block contenido
       h2.text-center.text-2xl.font-extrabold.text-orange-700= pagina
 
       a(href="/propiedades/crear" class="rounded py-2 bg-indigo-500 hover:bg-indigo-700 text-sm px-10 text-white font-bold uppercase transition-all inline-block my-5 w-full sm:w-auto text-center") Publicar Propiedad
+
+      //- pre= JSON.stringify(propiedades,null,3)
+
+      if propiedades.length
+        div(class="bg-white shadow rounded-lg")
+          ul(class="divide-y divide-gray-200")
+            each propiedad in propiedades
+              li 
+                div(class="p-6 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-8 md:space-y-0 gap-4")
+
+                  div(class="sm:w-1/4 md:w-1/6")
+                    img(src=`uploads/${propiedad.imagen}` alt=`Imagen propiedad ${propiedad.titulo}` class="w-full block")
+
+                  div(class="sm:w-2/4 md:w-3/6 lg:w-4/6 space-y-3")
+                    a(href="#" class="block text-2xl text-indigo-600 truncate font-extrabold")= propiedad.titulo
+
+                    p(class="text-sm text-black font-bold")= propiedad.categoria.nombre
+                    p(class="text-sm text-gray-500 font-bold flex  items-center")
+                      svg(xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1")
+                        path(stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z")
+                      = propiedad.precio.nombre
+
+                  div(class="sm:w-1/4 md:w-2/6 lg:w-1/6 flex flex-col gap-4")
+                    form(action="#")
+                      input(class=`w-full text-center px-1 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer transition-colors hover:text-white ${propiedad.publicado ? 'bg-green-100 text-green-800 hover:bg-green-800' : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-800'}` value=`${propiedad.publicado ? "Publicado" : "No Publicado"}`)
+                    a(href="#" class="block text-center px-1 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-indigo-100 text-indigo-800 hover:bg-indigo-800 hover:text-white transition-colors") Editar
+                    form(action="#")
+                      input(class="w-full text-center px-1 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-red-100 text-red-800 hover:bg-red-800 hover:text-white transition-colors" value='Eliminar')
+
+      else 
+        p.text-center No hay propiedades
