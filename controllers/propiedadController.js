@@ -74,10 +74,6 @@ const guardar = async (req, res) => {
     lng,
   } = req.body;
 
-  console.log(
-    `titulo ${titulo} - descripcion ${descripcion} - categoriaId ${categoriaId} - precioId ${precioId} - habitaciones ${habitaciones} - estacionamiento ${estacionamiento} - wc ${wc} - calle ${calle} - lat ${lat} - lng ${lng}`
-  );
-
   const { id: usuarioId } = req.usuario;
   console.log(`id de usuario: ${usuarioId}`);
   // return;
@@ -289,6 +285,27 @@ const eliminar = async (req, res) => {
   res.redirect("/mis-propiedades");
 };
 
+// mostrar una propiedad
+const mostrarPropiedad = async (req, res) => {
+  const { id } = req.params;
+
+  // comprobar que la propiedad exista
+  const propiedad = await Propiedad.findByPk(id, {
+    include: [
+      { model: Categoria, as: "categoria" },
+      { model: Precio, as: "precio" },
+    ],
+  });
+
+  if (!propiedad) {
+    return res.redirect("/404");
+  }
+  res.render("propiedades/mostrar", {
+    propiedad,
+    pagina: propiedad.titulo,
+  });
+};
+
 export {
   admin,
   crear,
@@ -298,4 +315,5 @@ export {
   editar,
   guardarCambios,
   eliminar,
+  mostrarPropiedad,
 };
