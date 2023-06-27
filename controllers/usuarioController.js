@@ -280,7 +280,7 @@ const nuevoPassword = async (req, res) => {
 
   // hashear el nuevo password
   const salt = await bcrypt.genSalt(10);
-  usuario.password = await bcrypt.hash(usuario.password, salt);
+  usuario.password = await bcrypt.hash(password, salt);
   usuario.token = null;
 
   await usuario.save();

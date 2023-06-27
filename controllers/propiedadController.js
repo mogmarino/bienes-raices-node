@@ -3,23 +3,54 @@ import { validationResult } from "express-validator";
 import { Precio, Categoria, Propiedad, Usuario } from "../models/index.js";
 
 const admin = async (req, res) => {
-  const { id } = req.usuario;
+  // query string ?pagina=2&orden=DESC
+  // console.log(req.query);
+  const { pagina: paginaActual } = req.query;
+  // siempre tiene que iniciar ^  - siempre finaliza $
+  const regex = /^[0-9]$/;
 
-  const propiedades = await Propiedad.findAll({
-    where: {
-      usuarioId: id,
-    },
-    include: [
-      { model: Categoria, as: "categoria" },
-      { model: Precio, as: "precio" },
-    ],
-  });
+  if (!regex.test(paginaActual)) {
+    return res.redirect("/mis-propiedades?pagina=1");
+  }
 
-  res.render("propiedades/admin", {
-    pagina: "Mis Propiedades",
-    csrfToken: req.csrfToken(),
-    propiedades,
-  });
+  try {
+    const { id } = req.usuario;
+
+    // limites y offset para el paginador
+    const limit = 5;
+    const offset = paginaActual * limit - limit;
+    const [propiedades, total] = await Promise.all([
+      Propiedad.findAll({
+        limit,
+        offset,
+        where: {
+          usuarioId: id,
+        },
+        include: [
+          { model: Categoria, as: "categoria" },
+          { model: Precio, as: "precio" },
+        ],
+      }),
+      Propiedad.count({
+        where: {
+          usuarioId: id,
+        },
+      }),
+    ]);
+
+    res.render("propiedades/admin", {
+      pagina: "Mis Propiedades",
+      csrfToken: req.csrfToken(),
+      propiedades,
+      paginas: Math.ceil(total / limit),
+      paginaActual: Number(paginaActual),
+      total,
+      offset,
+      limit,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const crear = async (req, res) => {
