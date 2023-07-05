@@ -5,6 +5,8 @@ import csrf from "csurf";
 import cookieParser from "cookie-parser";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import propiedadesRoutes from "./routes/propiedadesRoutes.js";
+import appRoutes from "./routes/appRoutes.js";
+import apiRoutes from "./routes/apiRoutes.js";
 
 import db from "./config/db.js";
 
@@ -40,6 +42,8 @@ app.use(express.static("public"));
 // use busca todas las rutas que empiecen con el string entre comillas
 app.use("/auth", usuarioRoutes);
 app.use("/", propiedadesRoutes);
+app.use("/", appRoutes);
+app.use("/api", apiRoutes);
 
 // definir un puerto y arrancar el proyecto
 const port = process.env.PORT || 3000;
