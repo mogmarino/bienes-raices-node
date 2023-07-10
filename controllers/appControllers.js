@@ -1,21 +1,91 @@
+import { Sequelize } from "sequelize";
 import { Precio, Categoria, Propiedad } from "../models/index.js";
 
 const inicio = async (req, res) => {
-  const [precios, categorias] = await Promise.all([
+  const [precios, categorias, casas, departamentos] = await Promise.all([
     Precio.findAll({ raw: true }),
     Categoria.findAll({ raw: true }),
+    Propiedad.findAll({
+      limit: 3,
+      where: {
+        categoriaId: 1,
+      },
+      include: [{ model: Precio, as: "precio" }],
+      order: [["createdAt", "DESC"]],
+    }),
+    Propiedad.findAll({
+      limit: 3,
+      where: {
+        categoriaId: 2,
+      },
+      include: [{ model: Precio, as: "precio" }],
+      order: [["createdAt", "DESC"]],
+    }),
   ]);
   res.render("inicio", {
     pagina: "Inicio",
     categorias,
     precios,
+    casas,
+    departamentos,
+    csrfToken: req.csrfToken(),
   });
 };
 
-const categoria = (req, res) => {};
+const categoria = async (req, res) => {
+  const { id } = req.params;
 
-const noEncontrado = (req, res) => {};
+  // comprobar que la categoria exista
+  const categoria = await Categoria.findByPk(id);
 
-const buscador = (req, res) => {};
+  if (!categoria) {
+    return res.redirect("/404");
+  }
+
+  // obtener las propiedades de la categoria
+  const propiedades = await Propiedad.findAll({
+    where: {
+      categoriaId: id,
+    },
+    include: [{ model: Precio, as: "precio" }],
+  });
+
+  res.render("categoria", {
+    pagina: `${categoria.nombre}s en Venta`,
+    propiedades,
+    csrfToken: req.csrfToken(),
+  });
+};
+
+const noEncontrado = (req, res) => {
+  res.render("404", {
+    pagina: "No encontrado",
+    csrfToken: req.csrfToken(),
+  });
+};
+
+const buscador = async (req, res) => {
+  const { termino } = req.body;
+
+  // validar que termino no este vacio
+  if (!termino.trim()) {
+    return res.redirect("back");
+  }
+
+  const propiedades = await Propiedad.findAll({
+    where: {
+      titulo: {
+        [Sequelize.Op.like]: "%" + termino + "%",
+      },
+    },
+    include: [{ model: Precio, as: "precio" }],
+  });
+
+  res.render("busqueda", {
+    pagina: "Resultados de la Busqueda",
+    propiedades,
+    csrfToken: req.csrfToken(),
+  });
+};
 
 export { inicio, categoria, noEncontrado, buscador };

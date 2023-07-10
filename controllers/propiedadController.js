@@ -26,6 +26,7 @@ const admin = async (req, res) => {
         where: {
           usuarioId: id,
         },
+        // raw: true,
         include: [
           { model: Categoria, as: "categoria" },
           { model: Precio, as: "precio" },
@@ -37,6 +38,10 @@ const admin = async (req, res) => {
         },
       }),
     ]);
+
+    propiedades.map((prop) => {
+      console.log(prop.categoria);
+    });
 
     res.render("propiedades/admin", {
       pagina: "Mis Propiedades",
@@ -334,6 +339,7 @@ const mostrarPropiedad = async (req, res) => {
   res.render("propiedades/mostrar", {
     propiedad,
     pagina: propiedad.titulo,
+    csrfToken: req.csrfToken(),
   });
 };
 
