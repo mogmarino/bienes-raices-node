@@ -12,6 +12,7 @@ import {
   mostrarPropiedad,
 } from "../controllers/propiedadController.js";
 import protegerRuta from "../middleware/protegerRuta.js";
+import identificarUsuario from "../middleware/identificarUsuario.js";
 import upload from "../middleware/subirImagen.js";
 
 const router = express.Router();
@@ -76,6 +77,8 @@ router.post(
 router.post("/propiedades/eliminar/:id", protegerRuta, eliminar);
 
 // area publica
-router.get("/propiedades/:id", mostrarPropiedad);
+router.get("/propiedades/:id", identificarUsuario, mostrarPropiedad);
+
+// almacenar los mensajes
 
 export default router;

@@ -1,6 +1,7 @@
 import { unlink } from "node:fs/promises";
 import { validationResult } from "express-validator";
 import { Precio, Categoria, Propiedad, Usuario } from "../models/index.js";
+import { esVendedor } from "../helpers/index.js";
 
 const admin = async (req, res) => {
   // query string ?pagina=2&orden=DESC
@@ -325,6 +326,8 @@ const eliminar = async (req, res) => {
 const mostrarPropiedad = async (req, res) => {
   const { id } = req.params;
 
+  console.log(req.usuario);
+
   // comprobar que la propiedad exista
   const propiedad = await Propiedad.findByPk(id, {
     include: [
@@ -336,10 +339,13 @@ const mostrarPropiedad = async (req, res) => {
   if (!propiedad) {
     return res.redirect("/404");
   }
+
   res.render("propiedades/mostrar", {
     propiedad,
     pagina: propiedad.titulo,
     csrfToken: req.csrfToken(),
+    usuario: req.usuario,
+    esVendedor: esVendedor(req.usuario?.id, propiedad.usuarioId),
   });
 };
 
