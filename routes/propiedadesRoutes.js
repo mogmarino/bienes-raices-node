@@ -10,6 +10,7 @@ import {
   guardarCambios,
   eliminar,
   mostrarPropiedad,
+  enviarMensaje,
 } from "../controllers/propiedadController.js";
 import protegerRuta from "../middleware/protegerRuta.js";
 import identificarUsuario from "../middleware/identificarUsuario.js";
@@ -80,5 +81,12 @@ router.post("/propiedades/eliminar/:id", protegerRuta, eliminar);
 router.get("/propiedades/:id", identificarUsuario, mostrarPropiedad);
 
 // almacenar los mensajes
-
+router.post(
+  "/propiedades/:id",
+  identificarUsuario,
+  body("mensaje")
+    .isLength({ min: 10 })
+    .withMessage("El mensaje no puede ir vacio o es muy corto"),
+  enviarMensaje
+);
 export default router;

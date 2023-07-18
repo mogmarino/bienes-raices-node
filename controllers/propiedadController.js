@@ -326,8 +326,6 @@ const eliminar = async (req, res) => {
 const mostrarPropiedad = async (req, res) => {
   const { id } = req.params;
 
-  console.log(req.usuario);
-
   // comprobar que la propiedad exista
   const propiedad = await Propiedad.findByPk(id, {
     include: [
@@ -349,6 +347,38 @@ const mostrarPropiedad = async (req, res) => {
   });
 };
 
+const enviarMensaje = async (req, res) => {
+  const { id } = req.params;
+
+  // comprobar que la propiedad exista
+  const propiedad = await Propiedad.findByPk(id, {
+    include: [
+      { model: Categoria, as: "categoria" },
+      { model: Precio, as: "precio" },
+    ],
+  });
+
+  if (!propiedad) {
+    return res.redirect("/404");
+  }
+
+  // renderizar los errores
+  let resultado = validationResult(req);
+
+  if (!resultado.isEmpty()) {
+    return res.render("propiedades/mostrar", {
+      propiedad,
+      pagina: propiedad.titulo,
+      csrfToken: req.csrfToken(),
+      usuario: req.usuario,
+      esVendedor: esVendedor(req.usuario?.id, propiedad.usuarioId),
+      errores: resultado.array(),
+    });
+  }
+
+  // almacenar el mensaje
+};
+
 export {
   admin,
   crear,
@@ -359,4 +389,5 @@ export {
   guardarCambios,
   eliminar,
   mostrarPropiedad,
+  enviarMensaje,
 };
