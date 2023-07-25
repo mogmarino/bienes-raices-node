@@ -9,12 +9,14 @@ import {
   comprobarToken,
   nuevoPassword,
   autenticar,
+  cerrarSesion,
 } from "../controllers/usuarioController.js";
 
 const router = express.Router();
 
 router.get("/login", formularioLogin);
 router.post("/login", autenticar);
+router.post("/cerrar-sesion", cerrarSesion);
 
 router.get("/registro", formularioRegistro);
 router.post("/registro", registrar);
